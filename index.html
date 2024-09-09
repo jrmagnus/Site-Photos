@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Photo Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        #upload-area {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            background-color: white;
+            text-align: center;
+            border-radius: 8px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .image-container {
+            margin: 10px;
+        }
+        .image-container img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .switch-view {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Photo Gallery</h1>
+    </header>
+
+    <div id="upload-area">
+        <label for="file-upload">Upload an Image</label>
+        <input type="file" id="file-upload" accept="image/*">
+    </div>
+
+    <div class="switch-view">
+        <button id="grid-view">Grid View</button>
+        <button id="list-view">List View</button>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        const fileUpload = document.getElementById('file-upload');
+        const gallery = document.getElementById('gallery');
+        const gridViewButton = document.getElementById('grid-view');
+        const listViewButton = document.getElementById('list-view');
+
+        fileUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const imgContainer = document.createElement('div');
+                imgContainer.classList.add('image-container');
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                imgContainer.appendChild(img);
+                gallery.appendChild(imgContainer);
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        gridViewButton.addEventListener('click', function() {
+            gallery.style.flexDirection = 'row';
+            document.querySelectorAll('.image-container').forEach(container => {
+                container.style.width = '200px';
+            });
+        });
+
+        listViewButton.addEventListener('click', function() {
+            gallery.style.flexDirection = 'column';
+            document.querySelectorAll('.image-container').forEach(container => {
+                container.style.width = '100%';
+            });
+        });
+    </script>
+
+</body>
+</html>
